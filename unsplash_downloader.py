@@ -50,44 +50,28 @@ def hash_file(filename):
     return md5.digest()
 
 
-def get_file_hashes(target_dir):
+def get_file_hashes(target_dir, trim_duplicates=False):
     print("Generating file hashes for folder", target_dir + "...")
     file_hashes = []
 
     for filename in os.listdir(target_dir):
         full_filename = target_dir + filename
 
-        file_hashes.append(hash_file(full_filename))
+        new_hash = hash_file(full_filename)
+
+        if new_hash in file_hashes:
+            if trim_duplicates:
+                os.remove(full_filename)
+        else:
+            file_hashes.append(new_hash)
 
     print("Successfully generated", len(file_hashes),
           "file hashes from", target_dir + ".")
     return file_hashes
 
 
-def trim_duplicates(target_dir):
-    print("Trimming duplicate files in", target_dir, "...")
-    file_hashes = []
-
-    for filename in os.listdir(target_dir):
-        full_filename = target_dir + filename
-
-        file_hash = hash_file(full_filename)
-
-        if file_hash in file_hashes:
-            print("File", filename, "is already present; deleting...")
-            os.remove(full_filename)
-        else:
-            print("File", filename, "is unique; continuing...")
-            file_hashes.append(file_hash)
-
-    print("Successfully trimmed diplicate files in", target_dir + ".")
-
-
 def main():
-    image_hashes = get_file_hashes(IMAGE_DIR)
-
-    if SHOULD_TRIM_DUPLICATES:
-        trim_duplicates(IMAGE_DIR)
+    image_hashes = get_file_hashes(IMAGE_DIR, SHOULD_TRIM_DUPLICATES)
 
     print("Downloading", NUM_IMAGES, "images from Unsplash...")
 
