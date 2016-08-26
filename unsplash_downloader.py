@@ -27,19 +27,18 @@ def get_unplash_picture(target_dir, width, height, image_hashes):
 
         new_image_hash = hash_file(new_filename)
         if new_image_hash in image_hashes:
-            print("Successfully downloaded duplicate Unsplash image.")
+            print("Ignored duplicate Unsplash image.")
             os.remove(new_filename)
             image_hashes.append(new_image_hash)
 
             return False
         else:
-            print("Successfully saved unique Unsplash image", fname,
-                  "to", target_dir + ".")
+            print("Successfully saved unique Unsplash image", fname + ".")
 
             return True
 
     else:
-        print("Failed to download Unplash image from", url)
+        print("Failed to download Unplash image from", url + ".")
 
     return False
 
@@ -81,9 +80,9 @@ def main():
     num_images_downloaded = 0
     while (num_images_downloaded < NUM_IMAGES):
         if get_unplash_picture(IMAGE_DIR, WIDTH, HEIGHT, image_hashes):
+            num_images_downloaded += 1
             print("Only", NUM_IMAGES - num_images_downloaded,
                   "images left to download.")
-            num_images_downloaded += 1
 
     print("Successfully downloaded", NUM_IMAGES,
           "unique images from Unsplash.")
