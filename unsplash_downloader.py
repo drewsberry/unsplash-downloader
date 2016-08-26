@@ -78,6 +78,8 @@ def main():
     num_images_downloaded = 0
     while (num_images_downloaded < NUM_IMAGES):
         if get_unplash_picture(IMAGE_DIR, WIDTH, HEIGHT, image_hashes):
+            print("Only", NUM_IMAGES - num_images_downloaded,
+                  "images left to download.")
             num_images_downloaded += 1
 
     print("Successfully downloaded", NUM_IMAGES,
