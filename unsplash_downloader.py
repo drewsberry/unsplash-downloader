@@ -30,10 +30,13 @@ def get_unplash_picture(target_dir, width, height, image_hashes):
             print("Successfully downloaded duplicate Unsplash image.")
             os.remove(new_filename)
             image_hashes.append(new_image_hash)
-            return True
+
+            return False
         else:
             print("Successfully saved unique Unsplash image", fname,
                   "to", target_dir + ".")
+
+            return True
 
     else:
         print("Failed to download Unplash image from", url)
